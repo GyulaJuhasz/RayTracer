@@ -146,14 +146,54 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Color.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Cylinder.cpp" />
+    <ClCompile Include="Diamond.cpp" />
+    <ClCompile Include="Ellipsoid.cpp" />
+    <ClCompile Include="HeartShape.cpp" />
+    <ClCompile Include="Intersection.cpp" />
+    <ClCompile Include="LightSource.cpp" />
+    <ClCompile Include="Object.cpp" />
+    <ClCompile Include="PhotonMap.cpp" />
+    <ClCompile Include="Polinom.cpp" />
+    <ClCompile Include="Ray.cpp" />
     <ClCompile Include="RayTracer.cpp" />
+    <ClCompile Include="RealRoots.cpp" />
+    <ClCompile Include="Rectangle.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Triangle.cpp" />
+    <ClCompile Include="TriangleMesh.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Color.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Cylinder.h" />
+    <ClInclude Include="Diamond.h" />
+    <ClInclude Include="MathUtils.h" />
+    <ClInclude Include="Ellipsoid.h" />
+    <ClInclude Include="FileUtils.h" />
+    <ClInclude Include="HeartShape.h" />
+    <ClInclude Include="Intersection.h" />
+    <ClInclude Include="LightSource.h" />
+    <ClInclude Include="Object.h" />
+    <ClInclude Include="PhotonMap.h" />
+    <ClInclude Include="Polinom.h" />
+    <ClInclude Include="Program.h" />
+    <ClInclude Include="Ray.h" />
+    <ClInclude Include="RealRoots.h" />
+    <ClInclude Include="Rectangle.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Triangle.h" />
+    <ClInclude Include="TriangleMesh.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
