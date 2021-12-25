@@ -74,10 +74,14 @@ raytracer::Color light1Color = white;
 raytracer::Rectangle table;
 raytracer::PhotonMap tablePhotonMap;
 
-raytracer::Vector corner1(-600.0, 300.0);
-raytracer::Vector corner2(300.0, -600.0);
-raytracer::Vector corner3(1200.0, 300.0);
-raytracer::Vector corner4(300.0, 1200.0);
+//raytracer::Vector corner1(-600.0, 300.0);
+//raytracer::Vector corner2(300.0, -600.0);
+//raytracer::Vector corner3(1200.0, 300.0);
+//raytracer::Vector corner4(300.0, 1200.0);
+raytracer::Vector corner1(0.0, 0.0, 200.0);
+raytracer::Vector corner2(300.0, 0.0, 200.0);
+raytracer::Vector corner3(300.0, 300.0, 200.0);
+raytracer::Vector corner4(0.0, 300.0, 200.0);
 
 // OBJ2 = Golden ring
 raytracer::Cylinder goldenRing;
@@ -156,18 +160,18 @@ raytracer::HeartShape heart;
 
 // CAMERA
 raytracer::Camera camera;
-//Vector lookAt(300.0,-300.0,300.0);
+raytracer::Vector lookAt(300.0,-300.0,300.0);
 double r = 1.0;
 double angle = 45;
 double diffX = r * cos(angle * 180 / PI);
 double diffY = r * sin(angle * 180 / PI);
-//Vector lookAt(0.0 + diffX, 575.0 + diffY, 0.0);
-raytracer::Vector lookAt(0.0, 583.0, 0.0);
-double planeWidth = 600.0;
-double planeHeight = 600.0;
-double planeAngle1 = 0.0;
+//raytracer::Vector lookAt(0.0 + diffX, 575.0 + diffY, 0.0);
+//Vector lookAt(0.0, 583.0, 0.0);
+double cameraPlaneWidth = 1200.0;
+double cameraPlaneHeight = 1200.0;
+double cameraPlaneAngle1 = 0.0;
 //double planeAngle2 = 25.0;
-double planeAngle2 = 0.0;
+double cameraPlaneAngle2 = 0.0;
 double fovDegree = 54.0;
 //double fovDegree = 90.0;
 
@@ -348,13 +352,13 @@ void initObjects() {
 }
 
 void initCamera() {
-	double cos1 = cos((planeAngle1 / 180.0) * PI);
-	double sin1 = sin((planeAngle1 / 180.0) * PI);
-	double cos2 = cos((planeAngle2 / 180.0) * PI);
-	double sin2 = sin((planeAngle2 / 180.0) * PI);
+	double cos1 = cos((cameraPlaneAngle1 / 180.0) * PI);
+	double sin1 = sin((cameraPlaneAngle1 / 180.0) * PI);
+	double cos2 = cos((cameraPlaneAngle2 / 180.0) * PI);
+	double sin2 = sin((cameraPlaneAngle2 / 180.0) * PI);
 
-	double halfPlaneWidth = planeWidth / 2;
-	double halfPlaneHeight = planeHeight / 2;
+	double halfPlaneWidth = cameraPlaneWidth / 2;
+	double halfPlaneHeight = cameraPlaneHeight / 2;
 	raytracer::Vector right(halfPlaneWidth * cos1, halfPlaneWidth * sin1, 0.0);
 	raytracer::Vector up(0.0, halfPlaneHeight * sin2, halfPlaneHeight * cos2);
 
@@ -366,7 +370,7 @@ void initScene() {
 
 	scene.AddLightSource(&light1);
 
-	//scene.AddObject(&table);
+	scene.AddObject(&table);
 	//scene.AddObject(&goldenRing);
 	//scene.AddObject(&silverRing);
 	//scene.AddObject(&copperRing);
@@ -379,7 +383,7 @@ void initScene() {
 	//scene.AddObject(&diamondElli);
 	//scene.AddObject(&diffuseElli);
 
-	scene.AddObject(&heart);
+	//scene.AddObject(&heart);
 }
 
 int main(int argc, char **argv) {
