@@ -16,16 +16,12 @@ namespace raytracer {
 
 		Diamond();
 
-		Diamond& BoundingVolume(raytracer::Ellipsoid *newBounding);
-
-		raytracer::Ellipsoid* GetBoundingVolume();
-
 		Diamond& DiamondBody(raytracer::TriangleMesh *newBody);
 
 		raytracer::TriangleMesh* GetDiamondBody();
 
-		raytracer::Intersection Intersect(raytracer::Ray ray);
-
+	protected:
+		raytracer::Intersection SpecificIntersect(raytracer::Ray ray);
 	};
 
 }

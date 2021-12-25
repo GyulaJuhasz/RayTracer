@@ -30,7 +30,8 @@ namespace raytracer {
 
 		double GetC();
 
-		Intersection Intersect(raytracer::Ray ray);
+	protected:
+		Intersection SpecificIntersect(raytracer::Ray ray);
 	};
 
 }

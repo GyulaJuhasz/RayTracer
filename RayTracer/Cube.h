@@ -20,7 +20,8 @@ namespace raytracer {
 	public:
 		Cube();
 
-		raytracer::Intersection Intersect(raytracer::Ray ray);
+	protected:
+		raytracer::Intersection SpecificIntersect(raytracer::Ray ray);
 
 	};
 

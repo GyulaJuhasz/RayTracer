@@ -25,6 +25,8 @@ namespace raytracer {
 		double shine;
 		ProceduralMode proceduralMode;
 		raytracer::PhotonMap* photonMap;
+		Object *boundingObject;
+		virtual raytracer::Intersection SpecificIntersect(raytracer::Ray ray) = 0;
 
 	public:
 
@@ -66,6 +68,8 @@ namespace raytracer {
 
 		Object& K(raytracer::Color newK);
 
+		Object& BoundingObject(raytracer::Object *newBoundingObject);
+
 		raytracer::Color GetK();
 
 		raytracer::Color GetFresnel(raytracer::Vector N, raytracer::Vector V);
@@ -74,6 +78,8 @@ namespace raytracer {
 
 		ProceduralMode GetProcMode();
 
+		raytracer::Intersection Intersect(raytracer::Ray ray);
+
 		void SetPhotonMap(PhotonMap *newMap);
 
 		raytracer::PhotonMap* GetPhotonMap();
@@ -81,8 +87,6 @@ namespace raytracer {
 		void WritePhotonMapToFile(const char* fileName);
 
 		void ReadPhotonMapFromFile(const char* fileName);
-
-		virtual raytracer::Intersection Intersect(raytracer::Ray ray) = 0;
 
 		virtual void AddPhoton(raytracer::Color intensity, raytracer::Vector position);
 

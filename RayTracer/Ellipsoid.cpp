@@ -34,7 +34,7 @@ Ellipsoid& Ellipsoid::C(double newC) {
 
 double Ellipsoid::GetC() { return _C; }
 
-raytracer::Intersection Ellipsoid::Intersect(raytracer::Ray ray) {
+raytracer::Intersection Ellipsoid::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 
 	result.Param(-1.0);

@@ -20,7 +20,7 @@ Cube::Cube() {
 	bottom.Corner1(FLD).Corner2(BLD).Corner3(BRD).Corner4(FRD);
 }
 
-raytracer::Intersection Cube::Intersect(raytracer::Ray ray) {
+raytracer::Intersection Cube::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 	raytracer::Intersection actual;
 

@@ -32,7 +32,8 @@ namespace raytracer {
 
 		bool IsSolid();
 
-		Intersection Intersect(raytracer::Ray ray);
+	protected:
+		Intersection SpecificIntersect(raytracer::Ray ray);
 	};
 
 }

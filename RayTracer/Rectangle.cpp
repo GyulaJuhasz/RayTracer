@@ -36,7 +36,7 @@ raytracer::Vector Rectangle::GetCorner4() { return corner4; }
 double Rectangle::GetSizeX() { return (corner2 - corner1).GetLenght(); }
 double Rectangle::GetSizeY() { return (corner3 - corner1).GetLenght(); }
 
-raytracer::Intersection Rectangle::Intersect(raytracer::Ray ray) {
+raytracer::Intersection Rectangle::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 
 	raytracer::Vector normal = ((corner2 - corner1) % (corner3 - corner1)).GetNormalized();
