@@ -1,8 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define new new_nelkul_is_meg_lehet_csinalni
-
 #define EPSZILON 0.000001f
 #define EPSZILON_TOLAS 0.1f
 #define PI 3.141592f

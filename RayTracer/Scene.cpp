@@ -297,12 +297,12 @@ void Scene::Shoot(raytracer::Color intensity, raytracer::Ray ray, int depth, boo
 	return;
 }
 
-void Scene::ToneMap(float *image) {
+void Scene::ToneMap(float *image, int imageWidth, int imageHeight) {
 
 	double sumOfLuminance = 0.0;
 	bool needed = false;
 
-	for (int i = 0; i < KEPSZELESSEG*KEPMAGASSAG * 3; i++) {
+	for (int i = 0; i < imageWidth * imageHeight * 3; i++) {
 		if (image[i] > 1.0) {
 			needed = true;
 			break;
@@ -311,16 +311,16 @@ void Scene::ToneMap(float *image) {
 
 	if (!needed) return;
 
-	for (int i = 0; i < KEPSZELESSEG*KEPMAGASSAG * 3; i += 3) {
+	for (int i = 0; i < imageWidth * imageHeight * 3; i += 3) {
 		sumOfLuminance += 0.21f * image[i];
 		sumOfLuminance += 0.72f * image[i + 1];
 		sumOfLuminance += 0.07f * image[i + 2];
 	}
 
-	double averageOfLuminance = sumOfLuminance / (KEPSZELESSEG*KEPMAGASSAG);
+	double averageOfLuminance = sumOfLuminance / (imageWidth * imageHeight);
 	double I, Ir, D;
 
-	for (int i = 0; i < KEPSZELESSEG*KEPMAGASSAG * 3; i += 3) {
+	for (int i = 0; i < imageWidth * imageHeight * 3; i += 3) {
 		I = 0.21f*image[i] + 0.72f*image[i + 1] + 0.07f*image[i + 2];
 		if (I < 0.0) {
 			image[i] = 0.0;
@@ -337,7 +337,7 @@ void Scene::ToneMap(float *image) {
 	}
 }
 
-void Scene::Render(float *image) {
+void Scene::Render(float *image, int imageWidth, int imageHeight) {
 	raytracer::Ray ray;
 	if (camera != NULL) {
 		if (KAUSZTIKA) {
@@ -457,11 +457,11 @@ void Scene::Render(float *image) {
 		std::cout << "Sugarkovetes start..." << std::endl << std::endl;
 
 		raytracer::Color actual;
-		for (int z = 0; z < KEPMAGASSAG; z++) {
+		for (int z = 0; z < imageHeight; z++) {
 
 			std::cout << (z + 1) << ". sor..." << std::endl;
 
-			for (int x = 0; x < KEPSZELESSEG; x++) {
+			for (int x = 0; x < imageWidth; x++) {
 				bool willFail = false;
 				ray = camera->GetRay(x, z);
 
@@ -471,7 +471,7 @@ void Scene::Render(float *image) {
 
 				actual = Trace(ray, 0, false);
 
-				int actualIndex = (KEPMAGASSAG - 1 - z) * 3 * KEPSZELESSEG + x * 3;
+				int actualIndex = (imageHeight - 1 - z) * 3 * imageWidth + x * 3;
 				image[actualIndex] = (float)actual.GetR();
 				image[actualIndex + 1] = (float)actual.GetG();
 				image[actualIndex + 2] = (float)actual.GetB();

@@ -11,8 +11,11 @@
 #include <GL/freeglut.h>
 #endif
 
+#include <cstdlib>
+
 #include "Camera.h"
 #include "Color.h"
+#include "Cone.h"
 #include "Config.h"
 #include "Cube.h"
 #include "Cylinder.h"
@@ -35,7 +38,10 @@
 #include "Vector.h"
 
 // IMAGE
-float finalImage[KEPSZELESSEG*KEPMAGASSAG * 3];
+float *finalImage = NULL;
+
+int windowWidth = KEPSZELESSEG;
+int windowHeight = KEPMAGASSAG;
 
 // raytracer::Colors
 raytracer::Color black(0.0, 0.0, 0.0);
@@ -158,9 +164,16 @@ double diffuseElliHeight = 200.0;
 // OBJ11 = Heart Shape
 raytracer::HeartShape heart;
 
+// OBJ12 = Cone 1
+raytracer::Cone cone1;
+
+raytracer::Vector cone1BaseCenter(200.0, 100.0, 0.0);
+double cone1Radius = 200.0;
+double cone1Height = 500.0;
+
 // CAMERA
 raytracer::Camera camera;
-raytracer::Vector lookAt(300.0,-300.0,300.0);
+raytracer::Vector lookAt(300.0, -300.0, 300.0);
 double r = 1.0;
 double angle = 45;
 double diffX = r * cos(angle * 180 / PI);
@@ -179,7 +192,7 @@ double fovDegree = 54.0;
 raytracer::Scene scene;
 raytracer::Color ambient = lightBlue;
 
-void buildDiamondTriangleMesh(raytracer::TriangleMesh *mesh, raytracer::Triangle *triangles, raytracer::Vector center, double width, double depth, double height) {
+void buildDiamondTriangleMesh(raytracer::TriangleMesh* mesh, raytracer::Triangle* triangles, raytracer::Vector center, double width, double depth, double height) {
 	// Diamond1
 
 	mesh->Clear();
@@ -196,23 +209,23 @@ void buildDiamondTriangleMesh(raytracer::TriangleMesh *mesh, raytracer::Triangle
 	uStart = KEZDO_U;
 	vStart = 0.0;
 
-	vertex1.X(width * sin(uStart*PI) * cos(vStart * 2 * PI));
-	vertex1.Y(depth * sin(uStart*PI) * sin(vStart * 2 * PI));
-	vertex1.Z(height * cos(uStart*PI));
+	vertex1.X(width * sin(uStart * PI) * cos(vStart * 2 * PI));
+	vertex1.Y(depth * sin(uStart * PI) * sin(vStart * 2 * PI));
+	vertex1.Z(height * cos(uStart * PI));
 	vertex1 = center + vertex1;
 
 	for (v = 1; v < TESSZELLACIO_V - 1; v++) {
 		vStart = (double)v / TESSZELLACIO_V;
 		vEnd = (double)(v + 1) / TESSZELLACIO_V;
 
-		vertex2.X(width * sin(uStart*PI) * cos(vStart * 2 * PI));
-		vertex2.Y(depth * sin(uStart*PI) * sin(vStart * 2 * PI));
-		vertex2.Z(height * cos(uStart*PI));
+		vertex2.X(width * sin(uStart * PI) * cos(vStart * 2 * PI));
+		vertex2.Y(depth * sin(uStart * PI) * sin(vStart * 2 * PI));
+		vertex2.Z(height * cos(uStart * PI));
 		vertex2 = center + vertex2;
 
-		vertex3.X(width * sin(uStart*PI) * cos(vEnd * 2 * PI));
-		vertex3.Y(depth * sin(uStart*PI) * sin(vEnd * 2 * PI));
-		vertex3.Z(height * cos(uStart*PI));
+		vertex3.X(width * sin(uStart * PI) * cos(vEnd * 2 * PI));
+		vertex3.Y(depth * sin(uStart * PI) * sin(vEnd * 2 * PI));
+		vertex3.Z(height * cos(uStart * PI));
 		vertex3 = center + vertex3;
 
 		triangles[i].Vertex1(vertex1).Vertex2(vertex2).Vertex3(vertex3);
@@ -230,24 +243,24 @@ void buildDiamondTriangleMesh(raytracer::TriangleMesh *mesh, raytracer::Triangle
 			vStart = (double)v / TESSZELLACIO_V;
 			vEnd = (double)(v + 1) / TESSZELLACIO_V;
 
-			vertex1.X(width * sin(uStart*PI) * cos(vStart * 2 * PI));
-			vertex1.Y(depth * sin(uStart*PI) * sin(vStart * 2 * PI));
-			vertex1.Z(height * cos(uStart*PI));
+			vertex1.X(width * sin(uStart * PI) * cos(vStart * 2 * PI));
+			vertex1.Y(depth * sin(uStart * PI) * sin(vStart * 2 * PI));
+			vertex1.Z(height * cos(uStart * PI));
 			vertex1 = center + vertex1;
 
-			vertex2.X(width * sin(uStart*PI) * cos(vEnd * 2 * PI));
-			vertex2.Y(depth * sin(uStart*PI) * sin(vEnd * 2 * PI));
-			vertex2.Z(height * cos(uStart*PI));
+			vertex2.X(width * sin(uStart * PI) * cos(vEnd * 2 * PI));
+			vertex2.Y(depth * sin(uStart * PI) * sin(vEnd * 2 * PI));
+			vertex2.Z(height * cos(uStart * PI));
 			vertex2 = center + vertex2;
 
-			vertex3.X(width * sin(uEnd*PI) * cos(vEnd * 2 * PI));
-			vertex3.Y(depth * sin(uEnd*PI) * sin(vEnd * 2 * PI));
-			vertex3.Z(height * cos(uEnd*PI));
+			vertex3.X(width * sin(uEnd * PI) * cos(vEnd * 2 * PI));
+			vertex3.Y(depth * sin(uEnd * PI) * sin(vEnd * 2 * PI));
+			vertex3.Z(height * cos(uEnd * PI));
 			vertex3 = center + vertex3;
 
-			vertex4.X(width * sin(uEnd*PI) * cos(vStart * 2 * PI));
-			vertex4.Y(depth * sin(uEnd*PI) * sin(vStart * 2 * PI));
-			vertex4.Z(height * cos(uEnd*PI));
+			vertex4.X(width * sin(uEnd * PI) * cos(vStart * 2 * PI));
+			vertex4.Y(depth * sin(uEnd * PI) * sin(vStart * 2 * PI));
+			vertex4.Z(height * cos(uEnd * PI));
 			vertex4 = center + vertex4;
 
 			triangles[i].Vertex1(vertex1).Vertex2(vertex2).Vertex3(vertex3);
@@ -269,19 +282,19 @@ void buildDiamondTriangleMesh(raytracer::TriangleMesh *mesh, raytracer::Triangle
 		vStart = (double)v / TESSZELLACIO_V;
 		vEnd = (double)(v + 1) / TESSZELLACIO_V;
 
-		vertex1.X(width * sin(uStart*PI) * cos(vStart * 2 * PI));
-		vertex1.Y(depth * sin(uStart*PI) * sin(vStart * 2 * PI));
-		vertex1.Z(height * cos(uStart*PI));
+		vertex1.X(width * sin(uStart * PI) * cos(vStart * 2 * PI));
+		vertex1.Y(depth * sin(uStart * PI) * sin(vStart * 2 * PI));
+		vertex1.Z(height * cos(uStart * PI));
 		vertex1 = center + vertex1;
 
-		vertex2.X(width * sin(uStart*PI) * cos(vEnd * 2 * PI));
-		vertex2.Y(depth * sin(uStart*PI) * sin(vEnd * 2 * PI));
-		vertex2.Z(height * cos(uStart*PI));
+		vertex2.X(width * sin(uStart * PI) * cos(vEnd * 2 * PI));
+		vertex2.Y(depth * sin(uStart * PI) * sin(vEnd * 2 * PI));
+		vertex2.Z(height * cos(uStart * PI));
 		vertex2 = center + vertex2;
 
-		vertex3.X(width * sin(uEnd*PI) * cos(vStart * 2 * PI));
-		vertex3.Y(depth * sin(uEnd*PI) * sin(vStart * 2 * PI));
-		vertex3.Z(height * cos(uEnd*PI));
+		vertex3.X(width * sin(uEnd * PI) * cos(vStart * 2 * PI));
+		vertex3.Y(depth * sin(uEnd * PI) * sin(vStart * 2 * PI));
+		vertex3.Z(height * cos(uEnd * PI));
 		vertex3 = center + vertex3;
 
 		triangles[i].Vertex1(vertex1).Vertex2(vertex2).Vertex3(vertex3);
@@ -305,7 +318,8 @@ void initObjects() {
 	table.SetPhotonMap(&tablePhotonMap);
 
 	// OBJ2 = Golden ring
-	goldenRing.N(goldN).K(goldK).Reflective();
+	goldenRing.Kd(green).Ka(black).Diffuse();
+	//goldenRing.N(goldN).K(goldK).Reflective();
 	goldenRing.BasePoint(goldenRingCenter).Radius(goldernRingRadius).Height(goldernRingHeight);
 
 	// OBJ3 = Silver ring
@@ -350,6 +364,9 @@ void initObjects() {
 	heart.Kd(lightBlue).Ka(lightBlue / PI).Diffuse();
 	//heart.N(diamondN).K(diamondK).Reflective().Refractive();
 
+	// OBJ12 = Cone 1
+	cone1.Kd(green).Ka(black).Diffuse();
+	cone1.BaseCenter(cone1BaseCenter).BaseRadius(cone1Radius).Height(cone1Height);
 }
 
 void initCamera() {
@@ -367,27 +384,31 @@ void initCamera() {
 }
 
 void initScene() {
+	scene.ClearLights();
+	scene.ClearObjects();
+
 	scene.Cam(&camera).Ambient(ambient);
 
 	scene.AddLightSource(&light1);
 
 	//scene.AddObject(&table);
-	//scene.AddObject(&goldenRing);
+	scene.AddObject(&goldenRing);
 	//scene.AddObject(&silverRing);
 	//scene.AddObject(&copperRing);
 	//scene.AddObject(&copperDisk);
 
 	//scene.AddObject(&diamondDisk);
 
-	scene.AddObject(&diamond1);
+	//scene.AddObject(&diamond1);
 	//scene.AddObject(&diamond2);
 	//scene.AddObject(&diamondElli);
 	//scene.AddObject(&diffuseElli);
 
 	//scene.AddObject(&heart);
+	scene.AddObject(&cone1);
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitWindowSize(KEPSZELESSEG, KEPMAGASSAG);
 	glutInitWindowPosition(100, 100);
@@ -400,9 +421,8 @@ int main(int argc, char **argv) {
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
-	initialize();
-
 	glutDisplayFunc(onDisplay);
+	glutReshapeFunc(onResize);
 	glutMouseFunc(onMouseEvent);
 	glutKeyboardFunc(onKeyboardEvent);
 
@@ -412,18 +432,24 @@ int main(int argc, char **argv) {
 }
 
 void initialize() {
+	if (finalImage != NULL) {
+		delete[] finalImage;
+	}
+
+	finalImage = new float[windowWidth * windowHeight * 3];
+
 	initLights();
 	initObjects();
 	initCamera();
 	initScene();
 
-	scene.Render(finalImage);
+	scene.Render(finalImage, windowWidth, windowHeight);
 	if (TONEMAP) {
-		scene.ToneMap(finalImage);
+		scene.ToneMap(finalImage, windowWidth, windowHeight);
 	}
 
 	if (FILE_IRAS) {
-		raytracer::files::saveToBmp(FILE_NEV, finalImage, KEPSZELESSEG, KEPMAGASSAG);
+		raytracer::files::saveToBmp(FILE_NEV, finalImage, windowWidth, windowHeight);
 	}
 
 	glutPostRedisplay();
@@ -431,8 +457,14 @@ void initialize() {
 
 void onDisplay() {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawPixels(KEPSZELESSEG, KEPMAGASSAG, GL_RGB, GL_FLOAT, finalImage);
+	glDrawPixels(windowWidth, windowHeight, GL_RGB, GL_FLOAT, finalImage);
 	glutSwapBuffers();
+}
+
+void onResize(int w, int h) {
+	windowWidth = w;
+	windowHeight = h;
+	initialize();
 }
 
 void onKeyboardEvent(unsigned char key, int x, int y) {

@@ -51,10 +51,9 @@ namespace raytracer {
 
 		void Shoot(raytracer::Color intensity, raytracer::Ray ray, int depth, bool inside);
 
-		void ToneMap(float *image);
+		void ToneMap(float *image, int imageWidth, int imageHeight);
 
-		void Render(float *image);
-
+		void Render(float *image, int imageWidth, int imageHeight);
 	};
 
 }
