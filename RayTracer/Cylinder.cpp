@@ -33,7 +33,7 @@ Cylinder& Cylinder::Solid(bool newSolid) {
 
 bool Cylinder::IsSolid() { return solid; }
 
-raytracer::Intersection Cylinder::Intersect(raytracer::Ray ray) {
+raytracer::Intersection Cylinder::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 	result.Param(-1.0);
 

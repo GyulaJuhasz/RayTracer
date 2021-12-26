@@ -21,7 +21,7 @@ void TriangleMesh::AddTriangle(raytracer::Triangle *newTriangle) {
 	}
 }
 
-raytracer::Intersection TriangleMesh::Intersect(raytracer::Ray ray) {
+raytracer::Intersection TriangleMesh::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 	raytracer::Intersection actual;
 

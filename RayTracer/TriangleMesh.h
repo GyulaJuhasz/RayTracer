@@ -21,8 +21,8 @@ namespace raytracer {
 
 		void AddTriangle(raytracer::Triangle *newTriangle);
 
-		raytracer::Intersection Intersect(raytracer::Ray ray);
-
+	protected:
+		raytracer::Intersection SpecificIntersect(raytracer::Ray ray);
 	};
 
 }

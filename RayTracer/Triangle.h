@@ -28,10 +28,11 @@ namespace raytracer {
 
 		raytracer::Vector GetVertex3();
 
-		raytracer::Intersection Intersect(raytracer::Ray ray);
 
 		void Beallit(raytracer::Vector cs1, raytracer::Vector cs2, raytracer::Vector cs3);
 
+	protected:
+		Intersection SpecificIntersect(raytracer::Ray ray);
 	};
 
 }

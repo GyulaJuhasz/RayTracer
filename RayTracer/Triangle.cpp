@@ -26,7 +26,7 @@ Triangle& Triangle::Vertex3(raytracer::Vector newVertex3) {
 raytracer::Vector Triangle::GetVertex3() { return vertex3; }
 
 
-raytracer::Intersection Triangle::Intersect(raytracer::Ray ray) {
+raytracer::Intersection Triangle::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 
 	raytracer::Vector normal = ((vertex2 - vertex1) % (vertex3 - vertex1)).GetNormalized();

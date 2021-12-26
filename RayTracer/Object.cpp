@@ -88,6 +88,11 @@ Object& Object::K(raytracer::Color newK) {
 	return *this;
 }
 
+Object& Object::BoundingObject(raytracer::Object *newBoundingObject) {
+	boundingObject = newBoundingObject;
+	return *this;
+}
+
 raytracer::Color Object::GetK() { return k; }
 
 raytracer::Color Object::GetFresnel(raytracer::Vector N, raytracer::Vector V) {
@@ -108,6 +113,16 @@ Object& Object::ProcMode(ProceduralMode newMode) {
 }
 
 Object::ProceduralMode Object::GetProcMode() { return proceduralMode; }
+
+raytracer::Intersection Object::Intersect(raytracer::Ray ray) {
+	if (boundingObject != NULL) {
+		raytracer::Intersection boundingObjectIntersection = boundingObject->Intersect(ray);
+		if (boundingObjectIntersection.GetParam() < 0.0) {
+			return boundingObjectIntersection;
+		}
+	}
+	return SpecificIntersect(ray);
+}
 
 void Object::SetPhotonMap(raytracer::PhotonMap *newMap) {
 	photonMap = newMap;

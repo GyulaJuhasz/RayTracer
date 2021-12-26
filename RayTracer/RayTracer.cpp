@@ -167,8 +167,8 @@ double diffX = r * cos(angle * 180 / PI);
 double diffY = r * sin(angle * 180 / PI);
 //raytracer::Vector lookAt(0.0 + diffX, 575.0 + diffY, 0.0);
 //Vector lookAt(0.0, 583.0, 0.0);
-double cameraPlaneWidth = 1200.0;
-double cameraPlaneHeight = 1200.0;
+double cameraPlaneWidth = 600.0;
+double cameraPlaneHeight = 600.0;
 double cameraPlaneAngle1 = 0.0;
 //double planeAngle2 = 25.0;
 double cameraPlaneAngle2 = 0.0;
@@ -327,14 +327,15 @@ void initObjects() {
 	// OBJ7 = Diamond1
 	buildDiamondTriangleMesh(&diamond1TriangleMesh, diamond1Triangles, diamond1Center, diamond1Width, diamond1Depth, diamond1Height);
 	diamond1Bounding.Center(diamond1Center).A(diamond1Width).B(diamond1Depth).C(diamond1Height);
-	diamond1.N(diamondN).K(diamondK).Reflective().Refractive();
-	diamond1.BoundingVolume(&diamond1Bounding).DiamondBody(&diamond1TriangleMesh);
+	diamond1.Kd(green).Ka(black).Diffuse().BoundingObject(&diamond1Bounding);
+	//diamond1.N(diamondN).K(diamondK).Reflective().Refractive().BoundingObject(&diamond1Bounding);
+	diamond1.DiamondBody(&diamond1TriangleMesh);
 
 	// OBJ8 = Diamond2
 	buildDiamondTriangleMesh(&diamond2TriangleMesh, diamond2Triangles, diamond2Center, diamond2Width, diamond2Depth, diamond2Height);
 	diamond2Bounding.Center(diamond2Center).A(diamond2Width).B(diamond2Depth).C(diamond2Height);
-	diamond2.N(diamondN).K(diamondK).Reflective().Refractive();
-	diamond2.BoundingVolume(&diamond2Bounding).DiamondBody(&diamond2TriangleMesh);
+	diamond2.N(diamondN).K(diamondK).Reflective().Refractive().BoundingObject(&diamond2Bounding);
+	diamond2.DiamondBody(&diamond2TriangleMesh);
 
 	// OBJ9 = Diamond Ellipsoid
 	//diamondElli.N(diamondN).K(diamondK).Reflective().Refractive();
@@ -370,7 +371,7 @@ void initScene() {
 
 	scene.AddLightSource(&light1);
 
-	scene.AddObject(&table);
+	//scene.AddObject(&table);
 	//scene.AddObject(&goldenRing);
 	//scene.AddObject(&silverRing);
 	//scene.AddObject(&copperRing);
@@ -378,7 +379,7 @@ void initScene() {
 
 	//scene.AddObject(&diamondDisk);
 
-	//scene.AddObject(&diamond1);
+	scene.AddObject(&diamond1);
 	//scene.AddObject(&diamond2);
 	//scene.AddObject(&diamondElli);
 	//scene.AddObject(&diffuseElli);

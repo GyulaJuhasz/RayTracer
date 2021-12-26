@@ -15,8 +15,6 @@
 #define TEXTURA true
 #define TEXTURA_X 300
 #define TEXTURA_Y 300
-//#define FOTONTERKEP_X 1000
-//#define FOTONTERKEP_Y 1000
 #define FOTONTERKEP_X 1000
 #define FOTONTERKEP_Y 1000
 #define FOTONSZAM 1000000
@@ -40,5 +38,7 @@
 #define FOTON_FAJLBA false
 
 #define MAX_POLINOM_DEGREE 8
+
+#define MAX_NUMBER_OF_COMPOSITE_OBJECT_PARTS 800
 
 #endif // !CONFIG_H

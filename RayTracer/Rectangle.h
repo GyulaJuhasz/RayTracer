@@ -36,14 +36,13 @@ namespace raytracer {
 		double GetSizeX();
 		double GetSizeY();
 
-		Intersection Intersect(raytracer::Ray ray);
-
 		virtual void AddPhoton(raytracer::Color intensity, raytracer::Vector position);
 
 		virtual raytracer::Color GetPhoton(raytracer::Vector position);
 
 		virtual raytracer::Color GetProceduralColor(raytracer::Vector position);
-
+	protected:
+		Intersection SpecificIntersect(raytracer::Ray ray);
 	};
 
 }

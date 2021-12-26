@@ -15,7 +15,7 @@ HeartShape::HeartShape() {
 	maxZ = -99999999.0;
 }
 
-raytracer::Intersection HeartShape::Intersect(raytracer::Ray ray) {
+raytracer::Intersection HeartShape::SpecificIntersect(raytracer::Ray ray) {
 	raytracer::Intersection result;
 
 	raytracer::Intersection test;
