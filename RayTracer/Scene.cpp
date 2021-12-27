@@ -462,12 +462,7 @@ void Scene::Render(float *image, int imageWidth, int imageHeight) {
 			std::cout << (z + 1) << ". sor..." << std::endl;
 
 			for (int x = 0; x < imageWidth; x++) {
-				bool willFail = false;
 				ray = camera->GetRay(x, z);
-
-				if (x == 260 && z == 175) {
-					willFail = true;
-				}
 
 				actual = Trace(ray, 0, false);
 

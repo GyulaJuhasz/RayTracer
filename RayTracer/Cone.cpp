@@ -53,11 +53,13 @@ raytracer::Intersection Cone::SpecificIntersect(raytracer::Ray ray) {
 	double vy = v.GetY();
 	double vz = v.GetZ();
 
-	double vertexZ = vertex.GetZ();
+	double cx = vertex.GetX();
+	double cy = vertex.GetY(); 
+	double cz = vertex.GetZ();
 
 	double a = vx * vx + vy * vy - baseRadiusPerHeight * baseRadiusPerHeight * vz * vz;
-	double b = 2.0 * (p0x * vx + p0y * vy - baseRadiusPerHeight * baseRadiusPerHeight * (p0z * vz - vertexZ * vz));
-	double c = p0x * p0x + p0y * p0y - baseRadiusPerHeight * baseRadiusPerHeight * (vertexZ * vertexZ + p0z * p0z - 2 * vertexZ * p0z);
+	double b = 2.0 * (p0x * vx - vx * cx + p0y * vy - vy * cy - baseRadiusPerHeight * baseRadiusPerHeight * (p0z * vz - cz * vz));
+	double c = p0x * p0x - 2 * p0x * cx + cx * cx + p0y * p0y - 2 * p0y * cy + cy * cy - baseRadiusPerHeight * baseRadiusPerHeight * (cz * cz + p0z * p0z - 2 * cz * p0z);
 	double discriminant = b * b - 4 * a * c;
 	if (discriminant < 0.0) {
 		// No root, no intersections
@@ -65,7 +67,7 @@ raytracer::Intersection Cone::SpecificIntersect(raytracer::Ray ray) {
 	}
 
 	double bottomHeight = baseCenter.GetZ();
-	double topHeight = vertexZ;
+	double topHeight = cz;
 	if (raytracer::math::IsZero(discriminant)) {
 		// One root, one intersection
 		double t = (-1.0 * b) / (2.0 * a);
@@ -148,7 +150,7 @@ raytracer::Intersection Cone::SpecificIntersect(raytracer::Ray ray) {
 raytracer::Vector Cone::GetSurfaceNormal(raytracer::Vector surfacePoint) {
 	raytracer::Vector centerPoint = raytracer::Vector(baseCenter.GetX(), baseCenter.GetY(), surfacePoint.GetZ());
 	raytracer::Vector r = surfacePoint - centerPoint;
-	raytracer::Vector upVector = baseCenter - centerPoint;
+	raytracer::Vector upVector = vertex - centerPoint;
 	raytracer::Vector rotationAxis = (r % upVector).GetNormalized();
 	raytracer::Vector normal = r * cosAlpha + (rotationAxis % r) * sinAlpha + rotationAxis * (rotationAxis * r) * oneMinusCosAlpha;
 	return normal.GetNormalized();

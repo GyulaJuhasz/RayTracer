@@ -71,23 +71,27 @@ raytracer::Color diamondK(0.0, 0.0, 0.0);
 
 // LIGHT1
 raytracer::LightSource light1;
-//Vector light1Position(800.0, 60.0, 500.0);
-raytracer::Vector light1Position(400.0, 150.0, 500.0);
-double light1Intensity = 500000.0;
+//raytracer::Vector light1Position(800.0, 60.0, 500.0);
+//raytracer::Vector light1Position(400.0, 150.0, 500.0);
+raytracer::Vector light1Position(1000.0, 150.0, 500.0);
+//double light1Intensity = 500000.0; 
+double light1Intensity = 1000000.0;
 raytracer::Color light1Color = white;
+
+// LIGHT2
+raytracer::LightSource light2;
+raytracer::Vector light2Position(-200.0, -150.0, 500.0);
+double light2Intensity = 200000.0;
+raytracer::Color light2Color = white;
 
 // OBJ1 = TABLE
 raytracer::Rectangle table;
 raytracer::PhotonMap tablePhotonMap;
 
-//raytracer::Vector corner1(-600.0, 300.0);
-//raytracer::Vector corner2(300.0, -600.0);
-//raytracer::Vector corner3(1200.0, 300.0);
-//raytracer::Vector corner4(300.0, 1200.0);
-raytracer::Vector corner1(0.0, 0.0, 200.0);
-raytracer::Vector corner2(300.0, 0.0, 200.0);
-raytracer::Vector corner3(300.0, 300.0, 200.0);
-raytracer::Vector corner4(0.0, 300.0, 200.0);
+raytracer::Vector corner1(-600.0, 300.0);
+raytracer::Vector corner2(300.0, -600.0);
+raytracer::Vector corner3(1200.0, 300.0);
+raytracer::Vector corner4(300.0, 1200.0);
 
 // OBJ2 = Golden ring
 raytracer::Cylinder goldenRing;
@@ -170,6 +174,30 @@ raytracer::Cone cone1;
 raytracer::Vector cone1BaseCenter(200.0, 100.0, 0.0);
 double cone1Radius = 200.0;
 double cone1Height = 500.0;
+
+// Pine trunk
+raytracer::Cylinder pineTrunk;
+raytracer::Vector pineTrunkBasePoint(200.0, 150.0, 0.0);
+double pineTrunkRadius = 40.0;
+double pineTrunkHeight = 150.0;
+
+// Pine crown 1
+raytracer::Cone pineCrown1;
+raytracer::Vector pineCrown1BaseCenter(200.0, 150.0, 150.0);
+double pineCrown1Radius = 200.0;
+double pineCrown1Height = 250;
+
+// Pine crown 2
+raytracer::Cone pineCrown2;
+raytracer::Vector pineCrown2BaseCenter(200.0, 150.0, 250.0);
+double pineCrown2Radius = 200.0;
+double pineCrown2Height = 250;
+
+// Pine crown 3
+raytracer::Cone pineCrown3;
+raytracer::Vector pineCrown3BaseCenter(200.0, 150.0, 350.0);
+double pineCrown3Radius = 200.0;
+double pineCrown3Height = 250;
 
 // CAMERA
 raytracer::Camera camera;
@@ -308,12 +336,15 @@ void buildDiamondTriangleMesh(raytracer::TriangleMesh* mesh, raytracer::Triangle
 void initLights() {
 	// LIGHT1
 	light1.LightPosition(light1Position).LightColor(light1Color).Intensity(light1Intensity);
+
+	// LIGHT2
+	light2.LightPosition(light2Position).LightColor(light2Color).Intensity(light2Intensity);
 }
 
 void initObjects() {
 	// OBJ1 = ASZTAL
-	//asztal.Diffuse().Kd(darkGray).Ka(darkGray * PI).Ks(white).Shine(1000.0).ProcMode(raytracer::Object::ProceduralMode::MULTIPLY);
-	table.Diffuse().Kd(darkGray).Ka(darkGray * PI).Ks(white).Shine(1000.0).ProcMode(raytracer::Object::ProceduralMode::NONE);
+	table.Diffuse().Kd(brown).Ka(brown / 100).Ks(white).Shine(1000.0).ProcMode(raytracer::Object::ProceduralMode::MULTIPLY);
+	//table.Diffuse().Kd(darkGray).Ka(darkGray * PI).Ks(white).Shine(1000.0).ProcMode(raytracer::Object::ProceduralMode::NONE);
 	table.Corner1(corner1).Corner2(corner2).Corner3(corner3).Corner4(corner4);
 	table.SetPhotonMap(&tablePhotonMap);
 
@@ -367,6 +398,22 @@ void initObjects() {
 	// OBJ12 = Cone 1
 	cone1.Kd(green).Ka(black).Diffuse();
 	cone1.BaseCenter(cone1BaseCenter).BaseRadius(cone1Radius).Height(cone1Height);
+
+	// Pine trunk
+	pineTrunk.Kd(brown).Ka(black).Diffuse();
+	pineTrunk.BasePoint(pineTrunkBasePoint).Radius(pineTrunkRadius).Height(pineTrunkHeight).Solid(true);
+
+	// Pine crown 1
+	pineCrown1.Kd(green).Ka(black).Diffuse();
+	pineCrown1.BaseCenter(pineCrown1BaseCenter).BaseRadius(pineCrown1Radius).Height(pineCrown1Height);
+
+	// Pine crown 2
+	pineCrown2.Kd(green).Ka(black).Diffuse();
+	pineCrown2.BaseCenter(pineCrown2BaseCenter).BaseRadius(pineCrown2Radius).Height(pineCrown2Height);
+
+	// Pine crown 3
+	pineCrown3.Kd(green).Ka(black).Diffuse();
+	pineCrown3.BaseCenter(pineCrown3BaseCenter).BaseRadius(pineCrown3Radius).Height(pineCrown3Height);
 }
 
 void initCamera() {
@@ -390,9 +437,10 @@ void initScene() {
 	scene.Cam(&camera).Ambient(ambient);
 
 	scene.AddLightSource(&light1);
+	scene.AddLightSource(&light2);
 
-	//scene.AddObject(&table);
-	scene.AddObject(&goldenRing);
+	scene.AddObject(&table);
+	//scene.AddObject(&goldenRing);
 	//scene.AddObject(&silverRing);
 	//scene.AddObject(&copperRing);
 	//scene.AddObject(&copperDisk);
@@ -405,7 +453,11 @@ void initScene() {
 	//scene.AddObject(&diffuseElli);
 
 	//scene.AddObject(&heart);
-	scene.AddObject(&cone1);
+	//scene.AddObject(&cone1);
+	scene.AddObject(&pineTrunk);
+	scene.AddObject(&pineCrown1);
+	scene.AddObject(&pineCrown2);
+	scene.AddObject(&pineCrown3);
 }
 
 int main(int argc, char** argv) {
